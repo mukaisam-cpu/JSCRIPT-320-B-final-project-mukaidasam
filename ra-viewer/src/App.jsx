@@ -8,7 +8,7 @@ function App() {
     <>
       <p>Under construction.</p>
       <p>How did you get here, anyway?</p>
-      <p>Commit CI test...</p>
+      <p>Commit CI test 2...</p>
     </>
   )
 }
