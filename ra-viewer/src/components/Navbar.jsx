@@ -6,8 +6,15 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 function SiteNavbar() {
     return (
         <Navbar expand="lg" className="bg-body-tertiary" fixed="top">
-            <Container>
-                <Navbar.Brand >RetroAchievements Viewer</Navbar.Brand>
+            <Container className="ms-5">
+                <Navbar.Brand >
+                    <img 
+                    src="https://static.retroachievements.org/assets/images/ra-icon.webp"
+                    height="30"
+                    className="me-2"
+                    />
+                    RetroAchievements Viewer
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">

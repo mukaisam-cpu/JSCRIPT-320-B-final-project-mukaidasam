@@ -7,8 +7,6 @@ import GameInfo from './routes/GameInfo'
 import SavedGames from './routes/SavedGames'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <BrowserRouter>
       <Routes>

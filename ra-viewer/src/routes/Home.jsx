@@ -8,6 +8,8 @@ const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.ph
 function Home() {
     const [_error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [systems, setSystems] = useState([]);
+    const [currentSystem, setCurrentSystem] = useState(null);
     const [systemNavList, setSystemNavList] = useState(<></>);
     const [gameCards, setGameCards] = useState(<></>);
 
@@ -19,9 +21,12 @@ function Home() {
                 data => {
                     console.log(data);
                     setLoading(false);
+                    setSystems(data);
                     setSystemNavList(data.map((system) =>
                         <Dropdown.Item>
-                            <img src={system.IconURL} />
+                            <img 
+                            src={system.IconURL} 
+                            className='me-2'/>
                             {system.Name}
                         </Dropdown.Item>
                     ));
