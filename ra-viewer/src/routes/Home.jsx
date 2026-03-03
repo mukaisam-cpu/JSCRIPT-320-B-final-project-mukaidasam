@@ -1,6 +1,7 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useEffect, useState } from 'react'
 import { PacmanLoader } from 'react-spinners'
+import SiteNavbar from '../components/Navbar';
 
 const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php"
 
@@ -34,6 +35,7 @@ function Home() {
     }, []) // Rate limiting array
 
     return (<div>
+        <SiteNavbar />
         <PacmanLoader color="red" loading={loading} />
 
         {!loading && <Dropdown drop={"end"}>
