@@ -2,8 +2,12 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { useEffect, useState } from 'react'
 import { PacmanLoader } from 'react-spinners'
 import SiteNavbar from '../components/Navbar';
+import Row from 'react-bootstrap/Row'
 
-const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php"
+
+const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php";
+const cardRows = 6;
+const cardCols = 3;
 
 function Home() {
     const [_error, setError] = useState(false);
@@ -12,6 +16,7 @@ function Home() {
     const [currentSystem, setCurrentSystem] = useState(null);
     const [systemNavList, setSystemNavList] = useState(<></>);
     const [gameCards, setGameCards] = useState(<></>);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         console.log('useEffect Home, get systems');
@@ -23,10 +28,10 @@ function Home() {
                     setLoading(false);
                     setSystems(data);
                     setSystemNavList(data.map((system) =>
-                        <Dropdown.Item>
-                            <img 
-                            src={system.IconURL} 
-                            className='me-2'/>
+                        <Dropdown.Item onClick={() => selectSystem(system)}>
+                            <img
+                                src={system.IconURL}
+                                className='me-2' />
                             {system.Name}
                         </Dropdown.Item>
                     ));
@@ -39,22 +44,32 @@ function Home() {
             )
     }, []) // Rate limiting array
 
+    const selectSystem = (system) => {
+        console.log(system);
+        setCurrentSystem(system);
+    }
+
     return (<div>
         <SiteNavbar />
         <PacmanLoader color="red" loading={loading} />
 
-        {!loading && <Dropdown drop={"end"} className="mt-4">
-            <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
-                Select System
-            </Dropdown.Toggle>
+        {!loading && <div className="mt-5">
+            <Dropdown drop={"end"} >
+                <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
+                    {currentSystem ? currentSystem.Name : "Select System"}
+                </Dropdown.Toggle>
 
-            <Dropdown.Menu
-                style={{overflowY:"scroll", maxHeight:300}}
+                <Dropdown.Menu
+                    style={{ overflowY: "scroll", maxHeight: 300 }}
                 >
-                {systemNavList}
-            </Dropdown.Menu>
-        </Dropdown>}
+                    {systemNavList}
+                </Dropdown.Menu>
+            </Dropdown>
 
+            <Row xs={3} md={6} className='g-4'>
+                {gameCards}
+            </Row>
+        </div>}
     </div>)
 }
 
