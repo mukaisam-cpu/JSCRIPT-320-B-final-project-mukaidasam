@@ -36,12 +36,14 @@ function Home() {
     return (<div>
         <PacmanLoader color="red" loading={loading} />
 
-        {!loading && <Dropdown>
+        {!loading && <Dropdown drop={"end"}>
             <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
                 Select System
             </Dropdown.Toggle>
 
-            <Dropdown.Menu>
+            <Dropdown.Menu
+                style={{overflowY:"scroll", maxHeight:300}}
+                >
                 {systemNavList}
             </Dropdown.Menu>
         </Dropdown>}
