@@ -7,7 +7,7 @@ const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.ph
 function Home() {
     const [_error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [systems, setSystems] = useState([]);
+    const [systemNavList, setSystemNavList] = useState(<></>);
     const [gameCards, setGameCards] = useState(<></>);
 
     useEffect(() => {
@@ -18,7 +18,12 @@ function Home() {
                 data => {
                     console.log(data);
                     setLoading(false);
-                    setSystems(data);
+                    setSystemNavList(data.map((system) =>
+                        <Dropdown.Item>
+                            <img src={system.IconURL} />
+                            {system.Name}
+                        </Dropdown.Item>
+                    ));
                 },
                 error => {
                     console.log(error)
@@ -37,12 +42,7 @@ function Home() {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">
-                    <img src="https://static.retroachievements.org/assets/images/system/md.png" />
-                    Action
-                    </Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                {systemNavList}
             </Dropdown.Menu>
         </Dropdown>}
 
