@@ -9,7 +9,7 @@ import GameCard from '../components/GameCard';
 const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php";
 const getGamesURL = "https://retroachievements.org/API/API_GetGameList.php";
 const apiKey = import.meta.env.VITE_RA_KEY;
-const cardRows = 6;
+const cardRows = 2;
 const cardCols = 3;
 
 function Home() {
@@ -19,6 +19,7 @@ function Home() {
     const [systems, setSystems] = useState([]);
     const [currentSystem, setCurrentSystem] = useState(null);
     const [systemNavList, setSystemNavList] = useState(<></>);
+    const [games, setGames] = useState([]);
     const [gameCards, setGameCards] = useState(<></>);
     const [page, setPage] = useState(1);
 
@@ -61,12 +62,15 @@ function Home() {
             .then(data => {
                 console.log(data);
                 setLoadingGames(false);
+                setGames(data);
                 setGameCards(data.map((game, index) =>
                         <GameCard
                             index={index}
                             id={game.ID}
                             title={game.Title}
                             image={game.ImageIcon}
+                            numAchievements={game.NumAchievements}
+                            points={game.Points}
                         />
                     ));
             })
