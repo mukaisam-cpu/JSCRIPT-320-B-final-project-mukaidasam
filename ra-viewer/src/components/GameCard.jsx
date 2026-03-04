@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col'
 function GameCard({ id, title, image, numAchievements, points }) {
     return <Card>
         <Row>
-            <Col md={2}>
+            <Col xs={2} md={2}>
                 <Card.Img 
                 src={`https://retroachievements.org${image}`}
                 ></Card.Img>
