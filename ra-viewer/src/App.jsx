@@ -5,16 +5,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './routes/Home'
 import GameInfo from './routes/GameInfo'
 import SavedGames from './routes/SavedGames'
+import About from './routes/About'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/game/:id" element={<GameInfo />} />
         <Route path="/saved" element={<SavedGames />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </BrowserRouter>
   )
