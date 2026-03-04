@@ -4,7 +4,9 @@ import { PacmanLoader } from 'react-spinners'
 import SiteNavbar from '../components/Navbar';
 import Row from 'react-bootstrap/Row'
 import GameCard from '../components/GameCard';
-import Pagination from 'react-bootstrap/Pagination'
+import PaginationBar from '../components/PaginationBar';
+import Container from 'react-bootstrap/Container';
+
 
 
 const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php";
@@ -25,7 +27,9 @@ function Home() {
     const [gameCards, setGameCards] = useState(<></>);
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [paginationbar, setPaginationBar] = useState(<></>)
 
+    // Initial call for systems list
     useEffect(() => {
         console.log('useEffect Home, get systems');
         fetch(`${getSystemListURL}?y=${apiKey}&a=1&g=1`)
@@ -52,6 +56,35 @@ function Home() {
                 }
             )
     }, []) // Rate limiting array
+
+    // Update games when changing page
+    useEffect(() => {
+        const offsetStart = cardsPerPage * (currentPage - 1);
+        const offsetEnd = cardsPerPage * currentPage;
+        console.log(games);
+
+        const paginatedGames = games.slice(offsetStart, offsetEnd);
+        console.log(paginatedGames);
+        setGameCards(paginatedGames.map((game, index) =>
+            <GameCard
+                index={index}
+                id={game.ID}
+                title={game.Title}
+                image={game.ImageIcon}
+                numAchievements={game.NumAchievements}
+                points={game.Points}
+            />
+        ));
+
+        // Update pagination bar
+        setPaginationBar(
+            <PaginationBar
+                currentPage={currentPage}
+                pageCount={pageCount}
+                setPage={setPage}
+            />
+        )
+    }, [games, currentPage])
 
     /**
      * Select system from dropdown, display first page of games, and prepare pagination
@@ -84,25 +117,23 @@ function Home() {
                 setCurrentPage(1);
 
                 // Calculate page count
-                setPageCount(Math.ceil(data.length / cardsPerPage));
+                const pageCount = Math.ceil(data.length / cardsPerPage)
+                setPageCount(pageCount);
+
+                // Update pagination bar
+                setPaginationBar(
+                    <PaginationBar
+                        currentPage={1}
+                        pageCount={pageCount}
+                        setPage={setPage}
+                    />
+                )
             })
     }
 
     const setPage = (page) => {
-        const offsetStart = cardsPerPage * (page - 1);
-        const offsetEnd = cardsPerPage * page;
+        console.log(`Set page: ${page}`)
 
-        const paginatedGames = data.slice(offsetStart, offsetEnd);
-        setGameCards(paginatedGames.map((game, index) =>
-            <GameCard
-                index={index}
-                id={game.ID}
-                title={game.Title}
-                image={game.ImageIcon}
-                numAchievements={game.NumAchievements}
-                points={game.Points}
-            />
-        ));
         setCurrentPage(page);
     }
 
@@ -116,57 +147,37 @@ function Home() {
 
     return (<div>
         <SiteNavbar />
-        <PacmanLoader color="red" loading={loadingSystems} className="mt-5" />
-
-        {!loadingSystems && <div className="mt-5">
-            <Row>
-                <Dropdown drop={"end"} >
-                    <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
-                        {currentSystem && <img src={currentSystem.IconURL} className='me-2' />}
-                        {currentSystem ? currentSystem.Name : "Select System"}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu
-                        style={{ overflowY: "scroll", maxHeight: 300 }}
-                    >
-                        {systemNavList}
-                    </Dropdown.Menu>
-                </Dropdown>
-            </Row>
-
-
-            <PacmanLoader color="red" loading={loadingGames} className="mt-3" />
-
-            <Row xs={1} lg={cardCols} className='g-4'>
-                {gameCards}
-            </Row>
-
-            {games.length > 0 &&
-                <Row className="mt-5">
-                    <Pagination>
-                        <Pagination.First />
-                        <Pagination.Prev />
-                        <Pagination.Item>{1}</Pagination.Item>
-                        <Pagination.Ellipsis />
-
-                        <Pagination.Item>{currentPage - 2}</Pagination.Item>
-                        <Pagination.Item>{currentPage - 1}</Pagination.Item>
-                        <Pagination.Item active>{currentPage}</Pagination.Item>
-                        <Pagination.Item>{currentPage + 1}</Pagination.Item>
-                        <Pagination.Item>{currentPage + 2}</Pagination.Item>
-
-                        <Pagination.Ellipsis />
-                        <Pagination.Item>{pageCount}</Pagination.Item>
-                        <Pagination.Next />
-                        <Pagination.Last />
-                    </Pagination>
+        <Container>
+            <PacmanLoader color="red" loading={loadingSystems} className="mt-5" />
+            {!loadingSystems && <div className="mt-5">
+                <Row>
+                    
                 </Row>
-            }
+                <Row>
+                    <Dropdown drop={"end"} >
+                        <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
+                            {currentSystem && <img src={currentSystem.IconURL} className='me-2' />}
+                            {currentSystem ? currentSystem.Name : "Select System"}
+                        </Dropdown.Toggle>
 
-
-
-        </div>}
-
+                        <Dropdown.Menu
+                            style={{ overflowY: "scroll", maxHeight: 300 }}
+                        >
+                            {systemNavList}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Row>
+                <PacmanLoader color="red" loading={loadingGames} className="mt-3" />
+                <Row xs={1} lg={cardCols} className='g-4'>
+                    {gameCards}
+                </Row>
+                {games.length > 0 &&
+                    <Row className="mt-3">
+                        {paginationbar}
+                    </Row>
+                }
+            </div>}
+        </Container>
     </div>)
 }
 
