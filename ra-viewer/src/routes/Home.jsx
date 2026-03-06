@@ -6,12 +6,13 @@ import Row from 'react-bootstrap/Row'
 import GameCard from '../components/GameCard';
 import PaginationBar from '../components/PaginationBar';
 import Container from 'react-bootstrap/Container';
+import getSecret from '../firebase/secrets';
 
 
 
 const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php";
 const getGamesURL = "https://retroachievements.org/API/API_GetGameList.php";
-const apiKey = import.meta.env.VITE_RA_KEY;
+const apiKey = getSecret("RA_API_KEY");
 const cardRows = 10;
 const cardCols = 2;
 const cardsPerPage = cardRows * cardCols;
