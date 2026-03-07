@@ -24,10 +24,12 @@ function Home() {
     const [currentSystem, setCurrentSystem] = useState(null);
     const [systemNavList, setSystemNavList] = useState(<></>);
     const [games, setGames] = useState([]);
+    const [filteredGames, setFilteredGames] = useState([]);
     const [gameCards, setGameCards] = useState(<></>);
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [paginationbar, setPaginationBar] = useState(<></>)
+    const [filter, setFilter] = useState("");
 
     // Initial call for systems list
     useEffect(() => {
@@ -85,6 +87,15 @@ function Home() {
             />
         )
     }, [games, currentPage])
+
+    // Filter game list
+    useEffect(() => {
+        console.log("useEffect filter");
+        console.log(filter);
+
+        const filteredList = games.filter((game) => game.Title.toLowerCase().includes(filter.toLowerCase()));
+        console.log(filteredList);
+    }, [games, filter])
 
     /**
      * Select system from dropdown, display first page of games, and prepare pagination
@@ -160,7 +171,9 @@ function Home() {
                     <Col xs="10">
                         <Form>
                             <Form.Group controlId='searchForm.search'>
-                                <Form.Control placeholder='Search games...' />
+                                <Form.Control placeholder='Search games...' onChange={e => {
+                                    setFilter(e.target.value);
+                                }}/>
                             </Form.Group>
                         </Form>
                     </Col>
