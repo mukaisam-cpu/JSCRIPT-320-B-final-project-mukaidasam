@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import { PacmanLoader } from 'react-spinners'
 import SiteNavbar from '../components/Navbar';
 import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import GameCard from '../components/GameCard';
 import PaginationBar from '../components/PaginationBar';
 import Container from 'react-bootstrap/Container';
-
-
+import Form from 'react-bootstrap/Form';
 
 const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php";
 const getGamesURL = "https://retroachievements.org/API/API_GetGameList.php";
@@ -137,35 +137,33 @@ function Home() {
         setCurrentPage(page);
     }
 
-    const nextPage = () => {
-
-    }
-
-    const prevPage = () => {
-
-    }
-
     return (<div>
         <SiteNavbar />
         <Container>
             <PacmanLoader color="red" loading={loadingSystems} className="mt-5" />
             {!loadingSystems && <div className="mt-5">
                 <Row>
-                    
-                </Row>
-                <Row>
-                    <Dropdown drop={"end"} >
-                        <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
-                            {currentSystem && <img src={currentSystem.IconURL} className='me-2' />}
-                            {currentSystem ? currentSystem.Name : "Select System"}
-                        </Dropdown.Toggle>
+                    <Col>
+                        <Dropdown drop={"bottom"} >
+                            <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
+                                {currentSystem && <img src={currentSystem.IconURL} className='me-2' />}
+                                {currentSystem ? currentSystem.Name : "Select System"}
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu
-                            style={{ overflowY: "scroll", maxHeight: 300 }}
-                        >
-                            {systemNavList}
-                        </Dropdown.Menu>
-                    </Dropdown>
+                            <Dropdown.Menu
+                                style={{ overflowY: "scroll", maxHeight: 300 }}
+                            >
+                                {systemNavList}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col xs="10">
+                        <Form>
+                            <Form.Group controlId='searchForm.search'>
+                                <Form.Control placeholder='Search games...' />
+                            </Form.Group>
+                        </Form>
+                    </Col>
                 </Row>
                 <PacmanLoader color="red" loading={loadingGames} className="mt-3" />
                 <Row xs={1} lg={cardCols} className='g-4'>
