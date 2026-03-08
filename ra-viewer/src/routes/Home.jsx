@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react'
 import { PacmanLoader } from 'react-spinners'
 import SiteNavbar from '../components/Navbar';
 import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import GameCard from '../components/GameCard';
 import PaginationBar from '../components/PaginationBar';
 import Container from 'react-bootstrap/Container';
-
-
+import Form from 'react-bootstrap/Form';
+import SearchBar from '../components/SearchBar';
 
 const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php";
 const getGamesURL = "https://retroachievements.org/API/API_GetGameList.php";
@@ -24,10 +25,12 @@ function Home() {
     const [currentSystem, setCurrentSystem] = useState(null);
     const [systemNavList, setSystemNavList] = useState(<></>);
     const [games, setGames] = useState([]);
+    const [displayGames, setDisplayGames] = useState([]);
     const [gameCards, setGameCards] = useState(<></>);
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [paginationbar, setPaginationBar] = useState(<></>)
+    const [filter, setFilter] = useState("");
 
     // Initial call for systems list
     useEffect(() => {
@@ -86,6 +89,18 @@ function Home() {
         )
     }, [games, currentPage])
 
+    // Filter game list
+    useEffect(() => {
+        console.log("useEffect filter");
+        console.log(filter);
+
+        if (filter !== "") {
+            const filteredList = games.filter((game) => game.Title.toLowerCase().includes(filter.toLowerCase()));
+            console.log(filteredList);
+            populateGames(filteredList);
+        }
+    }, [games, filter])
+
     /**
      * Select system from dropdown, display first page of games, and prepare pagination
      * @param {Object} system Object containing system data, retrieved from RA api call
@@ -101,34 +116,38 @@ function Home() {
                 console.log(data);
                 setLoadingGames(false);
                 setGames(data);
-
-                // Display page 1
-                const paginatedGames = data.slice(0, cardsPerPage);
-                setGameCards(paginatedGames.map((game, index) =>
-                    <GameCard
-                        index={index}
-                        id={game.ID}
-                        title={game.Title}
-                        image={game.ImageIcon}
-                        numAchievements={game.NumAchievements}
-                        points={game.Points}
-                    />
-                ));
-                setCurrentPage(1);
-
-                // Calculate page count
-                const pageCount = Math.ceil(data.length / cardsPerPage)
-                setPageCount(pageCount);
-
-                // Update pagination bar
-                setPaginationBar(
-                    <PaginationBar
-                        currentPage={1}
-                        pageCount={pageCount}
-                        setPage={setPage}
-                    />
-                )
+                populateGames(data);
             })
+    }
+
+    const populateGames = (gameList) => {
+        // Display page 1
+        setDisplayGames(gameList);
+        const paginatedGames = gameList.slice(0, cardsPerPage);
+        setGameCards(paginatedGames.map((game, index) =>
+            <GameCard
+                index={index}
+                id={game.ID}
+                title={game.Title}
+                image={game.ImageIcon}
+                numAchievements={game.NumAchievements}
+                points={game.Points}
+            />
+        ));
+        setCurrentPage(1);
+
+        // Calculate page count
+        const pageCount = Math.ceil(gameList.length / cardsPerPage)
+        setPageCount(pageCount);
+
+        // Update pagination bar
+        setPaginationBar(
+            <PaginationBar
+                currentPage={1}
+                pageCount={pageCount}
+                setPage={setPage}
+            />
+        )
     }
 
     const setPage = (page) => {
@@ -137,41 +156,35 @@ function Home() {
         setCurrentPage(page);
     }
 
-    const nextPage = () => {
-
-    }
-
-    const prevPage = () => {
-
-    }
-
     return (<div>
         <SiteNavbar />
         <Container>
             <PacmanLoader color="red" loading={loadingSystems} className="mt-5" />
             {!loadingSystems && <div className="mt-5">
                 <Row>
-                    
-                </Row>
-                <Row>
-                    <Dropdown drop={"end"} >
-                        <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
-                            {currentSystem && <img src={currentSystem.IconURL} className='me-2' />}
-                            {currentSystem ? currentSystem.Name : "Select System"}
-                        </Dropdown.Toggle>
+                    <Col>
+                        <Dropdown drop={"bottom"} >
+                            <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
+                                {currentSystem && <img src={currentSystem.IconURL} className='me-2' />}
+                                {currentSystem ? currentSystem.Name : "Select System"}
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu
-                            style={{ overflowY: "scroll", maxHeight: 300 }}
-                        >
-                            {systemNavList}
-                        </Dropdown.Menu>
-                    </Dropdown>
+                            <Dropdown.Menu
+                                style={{ overflowY: "scroll", maxHeight: 300 }}
+                            >
+                                {systemNavList}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col xs="10">
+                        <SearchBar setFilter={setFilter}/>
+                    </Col>
                 </Row>
                 <PacmanLoader color="red" loading={loadingGames} className="mt-3" />
                 <Row xs={1} lg={cardCols} className='g-4'>
                     {gameCards}
                 </Row>
-                {games.length > 0 &&
+                {displayGames.length > 0 &&
                     <Row className="mt-3">
                         {paginationbar}
                     </Row>
