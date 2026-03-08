@@ -18,7 +18,7 @@ function PaginationBar({ currentPage, pageCount, setPage}) {
             {currentPage < pageCount - 2 && <Pagination.Item onClick={() => setPage(currentPage + 2)}>{currentPage + 2}</Pagination.Item>}
             
             {currentPage < pageCount - 3  && <Pagination.Ellipsis />}
-            <Pagination.Item onClick={() => setPage(pageCount)}>{pageCount}</Pagination.Item>
+            {currentPage < pageCount && <Pagination.Item onClick={() => setPage(pageCount)}>{pageCount}</Pagination.Item>}
             {currentPage < pageCount ? <Pagination.Next onClick={() => setPage(currentPage + 1)}/>
             : <Pagination.Next disabled/>}
             {currentPage < pageCount ? <Pagination.Last onClick={() => setPage(pageCount)}/>

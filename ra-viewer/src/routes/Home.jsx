@@ -24,7 +24,7 @@ function Home() {
     const [currentSystem, setCurrentSystem] = useState(null);
     const [systemNavList, setSystemNavList] = useState(<></>);
     const [games, setGames] = useState([]);
-    const [filteredGames, setFilteredGames] = useState([]);
+    const [displayGames, setDisplayGames] = useState([]);
     const [gameCards, setGameCards] = useState(<></>);
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -121,6 +121,7 @@ function Home() {
 
     const populateGames = (gameList) => {
         // Display page 1
+        setDisplayGames(gameList);
         const paginatedGames = gameList.slice(0, cardsPerPage);
         setGameCards(paginatedGames.map((game, index) =>
             <GameCard
@@ -188,7 +189,7 @@ function Home() {
                 <Row xs={1} lg={cardCols} className='g-4'>
                     {gameCards}
                 </Row>
-                {games.length > 0 &&
+                {displayGames.length > 0 &&
                     <Row className="mt-3">
                         {paginationbar}
                     </Row>
