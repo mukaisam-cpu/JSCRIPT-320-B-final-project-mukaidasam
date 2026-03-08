@@ -22,7 +22,7 @@ function PaginationBar({ currentPage, pageCount, setPage}) {
             {currentPage < pageCount ? <Pagination.Next onClick={() => setPage(currentPage + 1)}/>
             : <Pagination.Next disabled/>}
             {currentPage < pageCount ? <Pagination.Last onClick={() => setPage(pageCount)}/>
-            : <Pagination.Last />}    
+            : <Pagination.Last disabled/>}    
         </Pagination>
     )
 }
