@@ -93,8 +93,12 @@ function Home() {
         console.log("useEffect filter");
         console.log(filter);
 
-        const filteredList = games.filter((game) => game.Title.toLowerCase().includes(filter.toLowerCase()));
-        console.log(filteredList);
+        const newGameList = [];
+
+        if (filter !== "") {
+            const filteredList = games.filter((game) => game.Title.toLowerCase().includes(filter.toLowerCase()));
+            console.log(filteredList);
+        }
     }, [games, filter])
 
     /**
@@ -112,34 +116,37 @@ function Home() {
                 console.log(data);
                 setLoadingGames(false);
                 setGames(data);
-
-                // Display page 1
-                const paginatedGames = data.slice(0, cardsPerPage);
-                setGameCards(paginatedGames.map((game, index) =>
-                    <GameCard
-                        index={index}
-                        id={game.ID}
-                        title={game.Title}
-                        image={game.ImageIcon}
-                        numAchievements={game.NumAchievements}
-                        points={game.Points}
-                    />
-                ));
-                setCurrentPage(1);
-
-                // Calculate page count
-                const pageCount = Math.ceil(data.length / cardsPerPage)
-                setPageCount(pageCount);
-
-                // Update pagination bar
-                setPaginationBar(
-                    <PaginationBar
-                        currentPage={1}
-                        pageCount={pageCount}
-                        setPage={setPage}
-                    />
-                )
+                populateGames(data);
             })
+    }
+
+    const populateGames = (gameList) => {
+        // Display page 1
+        const paginatedGames = gameList.slice(0, cardsPerPage);
+        setGameCards(paginatedGames.map((game, index) =>
+            <GameCard
+                index={index}
+                id={game.ID}
+                title={game.Title}
+                image={game.ImageIcon}
+                numAchievements={game.NumAchievements}
+                points={game.Points}
+            />
+        ));
+        setCurrentPage(1);
+
+        // Calculate page count
+        const pageCount = Math.ceil(gameList.length / cardsPerPage)
+        setPageCount(pageCount);
+
+        // Update pagination bar
+        setPaginationBar(
+            <PaginationBar
+                currentPage={1}
+                pageCount={pageCount}
+                setPage={setPage}
+            />
+        )
     }
 
     const setPage = (page) => {
@@ -173,7 +180,7 @@ function Home() {
                             <Form.Group controlId='searchForm.search'>
                                 <Form.Control placeholder='Search games...' onChange={e => {
                                     setFilter(e.target.value);
-                                }}/>
+                                }} />
                             </Form.Group>
                         </Form>
                     </Col>
