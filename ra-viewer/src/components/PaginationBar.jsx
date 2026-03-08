@@ -7,7 +7,7 @@ function PaginationBar({ currentPage, pageCount, setPage}) {
             : <Pagination.First disabled />}
             {currentPage > 1 ? <Pagination.Prev onClick={() => setPage(currentPage - 1)}/> 
             : <Pagination.Prev disabled />}
-            {currentPage > 1 && <Pagination.Item>{1}</Pagination.Item>}
+            {currentPage > 1 && <Pagination.Item onClick={() => setPage(1)}>{1}</Pagination.Item>}
             {currentPage > 3 && <Pagination.Ellipsis />}
 
 
