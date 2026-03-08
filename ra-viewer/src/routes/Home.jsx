@@ -93,11 +93,10 @@ function Home() {
         console.log("useEffect filter");
         console.log(filter);
 
-        const newGameList = [];
-
         if (filter !== "") {
             const filteredList = games.filter((game) => game.Title.toLowerCase().includes(filter.toLowerCase()));
             console.log(filteredList);
+            populateGames(filteredList);
         }
     }, [games, filter])
 
