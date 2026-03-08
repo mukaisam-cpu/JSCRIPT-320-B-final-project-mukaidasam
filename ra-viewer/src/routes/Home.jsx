@@ -8,6 +8,7 @@ import GameCard from '../components/GameCard';
 import PaginationBar from '../components/PaginationBar';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import SearchBar from '../components/SearchBar';
 
 const getSystemListURL = "https://retroachievements.org/API/API_GetConsoleIDs.php";
 const getGamesURL = "https://retroachievements.org/API/API_GetGameList.php";
@@ -176,13 +177,7 @@ function Home() {
                         </Dropdown>
                     </Col>
                     <Col xs="10">
-                        <Form>
-                            <Form.Group controlId='searchForm.search'>
-                                <Form.Control placeholder='Search games...' onChange={e => {
-                                    setFilter(e.target.value);
-                                }} />
-                            </Form.Group>
-                        </Form>
+                        <SearchBar setFilter={setFilter}/>
                     </Col>
                 </Row>
                 <PacmanLoader color="red" loading={loadingGames} className="mt-3" />
