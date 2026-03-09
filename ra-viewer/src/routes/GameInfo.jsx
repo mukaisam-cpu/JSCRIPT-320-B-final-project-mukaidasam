@@ -7,6 +7,7 @@ import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
+import SiteNavbar from "../components/Navbar";
 
 const mainURL = 'https://retroachievements.org';
 const apiKey = import.meta.env.VITE_RA_KEY;
@@ -91,7 +92,8 @@ function GameInfo() {
     }, [id])
 
     return <Container>
-        <Row className="mb-5">
+        <SiteNavbar />
+        <Row className="mb-4 mt-5">
             <Link to="/" >Go Back</Link>
         </Row>
         <Row>
