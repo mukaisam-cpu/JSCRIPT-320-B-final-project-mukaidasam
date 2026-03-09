@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 function AchievementCard({id, name, description, points, type, imageID}) {
     console.log(id);
-    return <Card bg="primary" text="white">
+    return <Card>
         <Row>
             <Col xs={2}>
                 <Card.Img src={`https://retroachievements.org/Badge/${imageID}.png`}></Card.Img>
