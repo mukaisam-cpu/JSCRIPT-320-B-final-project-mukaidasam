@@ -69,17 +69,16 @@ function GameInfo() {
                 data => {
                     console.log(data);
                     setHashCards(data.Results.map((hash) =>
-                        <Row>
-                            <Card bg="secondary" text="white">
+                        <Card bg="secondary" text="white">
                                 <Card.Body>
                                     <Row>
-                                        <Card.Text>{hash.Name}</Card.Text>
-                                        {hash.PatchURL && <Card.Text><a href={hash.PatchURL}>\(Patch Link\)</a></Card.Text>}
+                                        <Card.Text>{hash.Name} {hash.PatchUrl && <a href={hash.PatchUrl}>(Patch Link)</a>}</Card.Text>
+                                    </Row>
+                                    <Row>
                                         <Card.Text>Hash: {hash.MD5}</Card.Text>
                                     </Row>
                                 </Card.Body>
                             </Card>
-                        </Row>
                     ));
                     setLoading(false);
                 },
@@ -115,10 +114,10 @@ function GameInfo() {
                     <p>Number of Achievements: {Object.keys(achievements).length}</p>
                 </Col>
             </Row>
-            <Row>
-                <CardGroup>{hashCards}</CardGroup>
+            <Row lg={1}>
+                {hashCards}
             </Row>
-            <Row>
+            <Row className="mt-5">
                 {achievementsHTML}
             </Row>
         </div>
