@@ -5,13 +5,18 @@ import { PacmanLoader } from "react-spinners";
 import AchievementCard from "../components/AchievementCard";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
+import Card from 'react-bootstrap/Card'
+import CardGroup from 'react-bootstrap/CardGroup'
 
 const mainURL = 'https://retroachievements.org';
-const getGameURL = `${mainURL}/API/API_GetGameExtended.php?y=qtS2IUe8DGi0PLrbAagOpsVCuKRiFf0y`;
+const apiKey = import.meta.env.VITE_RA_KEY;
+const getGameURL = `${mainURL}/API/API_GetGameExtended.php?y=${apiKey}`;
+const getHashURL = `${mainURL}/API/API_GetGameHashes.php?y=${apiKey}`;
 const defaultImage = `${mainURL}/Images/000001.png`;
 
 function GameInfo() {
     const [_error, setError] = useState(false);
+    const [_hashError, setHashError] = useState(false);
     const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(defaultImage);
@@ -21,6 +26,7 @@ function GameInfo() {
     const [developer, setDeveloper] = useState("");
     const [achievements, setAchievements] = useState({});
     const [achievementsHTML, setAchievementsHTML] = useState(<></>);
+    const [hashCards, setHashCards] = useState(<></>);
 
     const { id } = useParams();
     console.log(id);
@@ -32,7 +38,7 @@ function GameInfo() {
             .then(
                 data => {
                     console.log(data);
-                    setLoading(false);
+                    // setLoading(false);
                     setTitle(data.Title);
                     setImage(`${mainURL}${data.ImageBoxArt}`);
                     setGamePageURL(`${mainURL}/game/${id}`);
@@ -50,10 +56,35 @@ function GameInfo() {
                             imageID={data.Achievements[id].BadgeName}
                         />
                     ))
+
+                    return fetch(`${getHashURL}&i=${id}`);
                 },
                 error => {
                     console.log(error);
                     setError(true);
+                    setLoading(false);
+                }
+            ).then(response => response.json())
+            .then(
+                data => {
+                    console.log(data);
+                    setHashCards(data.Results.map((hash) =>
+                        <Card bg="secondary" text="white">
+                                <Card.Body>
+                                    <Row>
+                                        <Card.Text>{hash.Name} {hash.PatchUrl && <a href={hash.PatchUrl}>(Patch Link)</a>}</Card.Text>
+                                    </Row>
+                                    <Row>
+                                        <Card.Text>Hash: {hash.MD5}</Card.Text>
+                                    </Row>
+                                </Card.Body>
+                            </Card>
+                    ));
+                    setLoading(false);
+                },
+                error => {
+                    console.log(error);
+                    setHashError(true);
                     setLoading(false);
                 }
             )
@@ -83,7 +114,10 @@ function GameInfo() {
                     <p>Number of Achievements: {Object.keys(achievements).length}</p>
                 </Col>
             </Row>
-            <Row>
+            <Row lg={1}>
+                {hashCards}
+            </Row>
+            <Row className="mt-5">
                 {achievementsHTML}
             </Row>
         </div>
