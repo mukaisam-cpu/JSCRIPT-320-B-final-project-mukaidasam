@@ -181,7 +181,7 @@ function Home() {
                     </Col>
                 </Row>
                 <PacmanLoader color="red" loading={loadingGames} className="mt-3" />
-                <Row xs={1} lg={cardCols} className='g-4'>
+                <Row xs={1} lg={cardCols} className='g-2 mt-1'>
                     {gameCards}
                 </Row>
                 {displayGames.length > 0 &&
