@@ -64,9 +64,9 @@ function Home() {
     useEffect(() => {
         const offsetStart = cardsPerPage * (currentPage - 1);
         const offsetEnd = cardsPerPage * currentPage;
-        console.log(games);
+        console.log(displayGames);
 
-        const paginatedGames = games.slice(offsetStart, offsetEnd);
+        const paginatedGames = displayGames.slice(offsetStart, offsetEnd);
         console.log(paginatedGames);
         setGameCards(paginatedGames.map((game, index) =>
             <GameCard
