@@ -7,12 +7,10 @@ function GameCard({ id, title, image, numAchievements, points }) {
     return <Card>
         <Row>
             <Col xs={2} md={2}>
-                <Card.Img 
-                src={`https://retroachievements.org${image}`}
-                ></Card.Img>
+                <Card.Img src={`https://retroachievements.org${image}`}/>
             </Col>
             <Col>
-                <Link to={`/gameInfo/${id}`}>{title}</Link>
+                <Link to={`/game/${id}`}>{title}</Link>
                 <Card.Text> 
                     <b>{numAchievements}</b> achievements worth <b>{points}</b> points
                 </Card.Text>
