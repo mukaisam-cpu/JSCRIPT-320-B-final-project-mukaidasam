@@ -7,7 +7,8 @@ import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 
 const mainURL = 'https://retroachievements.org';
-const getGameURL = `${mainURL}/API/API_GetGameExtended.php?y=qtS2IUe8DGi0PLrbAagOpsVCuKRiFf0y`;
+const apiKey = import.meta.env.VITE_RA_KEY;
+const getGameURL = `${mainURL}/API/API_GetGameExtended.php?y=${apiKey}`;
 const defaultImage = `${mainURL}/Images/000001.png`;
 
 function GameInfo() {
