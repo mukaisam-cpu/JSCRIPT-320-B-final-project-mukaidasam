@@ -6,7 +6,7 @@ import AchievementCard from "../components/AchievementCard";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import Card from 'react-bootstrap/Card'
-import CardGroup from 'react-bootstrap/CardGroup'
+import Button from 'react-bootstrap/Button'
 
 const mainURL = 'https://retroachievements.org';
 const apiKey = import.meta.env.VITE_RA_KEY;
@@ -105,13 +105,13 @@ function GameInfo() {
                     <img src={image} />
                 </Col>
                 <Col>
-                    <Link to={gamePageURL} target="_blank" rel="noopener noreferrer">
-                        <h1>{title}</h1>
-                    </Link>
+                    <h1>{title}</h1>
                     <p>Console: {gameConsole}</p>
                     <p>Release Date: {releaseDate}</p>
                     <p>Developer: {developer}</p>
                     <p>Number of Achievements: {Object.keys(achievements).length}</p>
+                    <Button href={gamePageURL} target="_blank">Go To Game Page</Button>
+
                 </Col>
             </Row>
             <Row lg={1}>
