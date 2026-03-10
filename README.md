@@ -10,10 +10,14 @@ information displayed considerably.
 
 ### 2) What didn't work well (what was difficult to understand or parse)?
 
-Getting the site deployed was the first difficult step, due to some issues with my directory setup. Some features could not be implemented due to time constraints, namely
-the game saving feature from the previous iteration of this project. Formatting react-bootstrap components was also a significant challenge (it's hard to figure out which 
-flexbox class goes on which component to properly resize a specific component), especially considering I was split between the Javascript Bootstrap and react-bootstrap 
-documentation and info. I unfortunately also couldn't get unit tests running in time for the due date.
+Getting the site deployed was the first difficult step, due to some issues with my directory setup. Some features
+could not be implemented due to time constraints, namely the game saving feature from the previous iteration of
+this project. Formatting react-bootstrap components was also a significant challenge (it's hard to figure out 
+which  flexbox class goes on which component to properly resize a specific component), especially considering I
+was split between the Javascript Bootstrap and react-bootstrap documentation and info. Another big time loss was 
+setting up the API key to be hidden- and unfortunately from the way the RetroAchivements API passes in its 
+calls, I don't believe I'm able to hide the API key entirely. I unfortunately also couldn't get unit tests 
+running in time for the due date.
 
 ### 3) What changes would you make to this project now that it's deployed?
 
