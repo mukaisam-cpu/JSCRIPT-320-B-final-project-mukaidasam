@@ -34,13 +34,11 @@ function Home() {
 
     // Initial call for systems list
     useEffect(() => {
-        console.log('useEffect Home, get systems');
         fetch(`${getSystemListURL}?y=${apiKey}&a=1&g=1`)
             .then(response => response.json())
             .then(
                 // Populate systems dropdown
                 data => {
-                    console.log(data);
                     setLoadingSystems(false);
                     setSystems(data);
                     setSystemNavList(data.map((system) =>
@@ -53,7 +51,6 @@ function Home() {
                     ));
                 },
                 error => {
-                    console.log(error)
                     setError(true);
                     setLoadingSystems(false);
                 }
@@ -64,10 +61,8 @@ function Home() {
     useEffect(() => {
         const offsetStart = cardsPerPage * (currentPage - 1);
         const offsetEnd = cardsPerPage * currentPage;
-        console.log(displayGames);
 
         const paginatedGames = displayGames.slice(offsetStart, offsetEnd);
-        console.log(paginatedGames);
         setGameCards(paginatedGames.map((game, index) =>
             <GameCard
                 index={index}
@@ -91,12 +86,8 @@ function Home() {
 
     // Filter game list
     useEffect(() => {
-        console.log("useEffect filter");
-        console.log(filter);
-
         if (filter !== "") {
             const filteredList = games.filter((game) => game.Title.toLowerCase().includes(filter.toLowerCase()));
-            console.log(filteredList);
             populateGames(filteredList);
         }
     }, [games, filter])
@@ -106,14 +97,12 @@ function Home() {
      * @param {Object} system Object containing system data, retrieved from RA api call
      */
     const selectSystem = (system) => {
-        console.log(system);
         setCurrentSystem(system);
 
         setLoadingGames(true);
         fetch(`${getGamesURL}?&y=${apiKey}&i=${system.ID}&f=1`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 setLoadingGames(false);
                 setGames(data);
                 populateGames(data);
@@ -150,9 +139,8 @@ function Home() {
         )
     }
 
+    // In hindsight this wasn't as complicated as I was expecting, not gonna touch it before the presentation though
     const setPage = (page) => {
-        console.log(`Set page: ${page}`)
-
         setCurrentPage(page);
     }
 

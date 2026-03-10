@@ -4,7 +4,6 @@ import Col from 'react-bootstrap/Col'
 import { Link } from 'react-router-dom'
 
 function AchievementCard({id, name, description, points, type, imageID}) {
-    console.log(id);
     return <Card>
         <Row>
             <Col xs={2}>
