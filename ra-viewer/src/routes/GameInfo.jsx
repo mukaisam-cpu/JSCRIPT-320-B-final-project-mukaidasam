@@ -30,15 +30,12 @@ function GameInfo() {
     const [hashCards, setHashCards] = useState(<></>);
 
     const { id } = useParams();
-    console.log(id);
 
     useEffect(() => {
-        console.log('useEffect GameInfo');
         fetch(`${getGameURL}&i=${id}`)
             .then(response => response.json())
             .then(
                 data => {
-                    console.log(data);
                     // setLoading(false);
                     setTitle(data.Title);
                     setImage(`${mainURL}${data.ImageBoxArt}`);
@@ -61,14 +58,12 @@ function GameInfo() {
                     return fetch(`${getHashURL}&i=${id}`);
                 },
                 error => {
-                    console.log(error);
                     setError(true);
                     setLoading(false);
                 }
             ).then(response => response.json())
             .then(
                 data => {
-                    console.log(data);
                     setHashCards(data.Results.map((hash) =>
                         <Card bg="secondary" text="white">
                                 <Card.Body>
@@ -84,7 +79,6 @@ function GameInfo() {
                     setLoading(false);
                 },
                 error => {
-                    console.log(error);
                     setHashError(true);
                     setLoading(false);
                 }
