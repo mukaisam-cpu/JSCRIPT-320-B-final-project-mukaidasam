@@ -21,8 +21,8 @@ running in time for the due date.
 
 ### 3) What changes would you make to this project now that it's deployed?
 
-Nothing major besides styling updates and additions, which are covered in the point below. Overall I think this page came pretty close to my vision, aside from the notable
-omissions due to time constraints.
+Nothing major, primarily just style/layout changes (Might move game links on home to their own button...) and abstracting more components into their own filees. Overall I 
+think this page came pretty close to my vision, aside from the notable omissions due to time constraints.
 
 ### 4) What would you improve and/or add to this project now that it's deployed?
 
