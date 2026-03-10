@@ -16,8 +16,7 @@ this project. Formatting react-bootstrap components was also a significant chall
 which  flexbox class goes on which component to properly resize a specific component), especially considering I
 was split between the Javascript Bootstrap and react-bootstrap documentation and info. Another big time loss was 
 setting up the API key to be hidden- and unfortunately from the way the RetroAchivements API passes in its 
-calls, I don't believe I'm able to hide the API key entirely. I unfortunately also couldn't get unit tests 
-running in time for the due date.
+calls, I don't believe I'm able to hide the API key entirely.
 
 ### 3) What changes would you make to this project now that it's deployed?
 
