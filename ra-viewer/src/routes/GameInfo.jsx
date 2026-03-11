@@ -58,6 +58,7 @@ function GameInfo() {
                     return fetch(`${getHashURL}&i=${id}`);
                 },
                 error => {
+                    console.log(error);
                     setError(true);
                     setLoading(false);
                 }
@@ -79,6 +80,7 @@ function GameInfo() {
                     setLoading(false);
                 },
                 error => {
+                    console.log(error);
                     setHashError(true);
                     setLoading(false);
                 }
