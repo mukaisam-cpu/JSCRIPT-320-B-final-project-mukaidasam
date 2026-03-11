@@ -1,9 +1,8 @@
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { Link } from 'react-router-dom'
 
-function AchievementCard({id, name, description, points, type, imageID}) {
+function AchievementCard({name, description, points, imageID}) {
     return <Card>
         <Row>
             <Col xs={2}>

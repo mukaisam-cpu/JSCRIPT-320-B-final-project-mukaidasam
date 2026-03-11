@@ -21,7 +21,6 @@ function Home() {
     const [_error, setError] = useState(false);
     const [loadingSystems, setLoadingSystems] = useState(true);
     const [loadingGames, setLoadingGames] = useState(false);
-    const [systems, setSystems] = useState([]);
     const [currentSystem, setCurrentSystem] = useState(null);
     const [systemNavList, setSystemNavList] = useState(<></>);
     const [games, setGames] = useState([]);
@@ -32,6 +31,53 @@ function Home() {
     const [paginationbar, setPaginationBar] = useState(<></>)
     const [filter, setFilter] = useState("");
 
+    const populateGames = (gameList) => {
+        // Display page 1
+        setDisplayGames(gameList);
+        const paginatedGames = gameList.slice(0, cardsPerPage);
+        setGameCards(paginatedGames.map((game, index) =>
+            <GameCard
+                index={index}
+                id={game.ID}
+                title={game.Title}
+                image={game.ImageIcon}
+                numAchievements={game.NumAchievements}
+                points={game.Points}
+            />
+        ));
+        setCurrentPage(1);
+
+        // Calculate page count
+        const pageCount = Math.ceil(gameList.length / cardsPerPage)
+        setPageCount(pageCount);
+
+        // Update pagination bar
+        setPaginationBar(
+            <PaginationBar
+                currentPage={1}
+                pageCount={pageCount}
+                setPage={setPage}
+            />
+        )
+    }
+
+    /**
+     * Select system from dropdown, display first page of games, and prepare pagination
+     * @param {Object} system Object containing system data, retrieved from RA api call
+     */
+    const selectSystem = (system) => {
+        setCurrentSystem(system);
+
+        setLoadingGames(true);
+        fetch(`${getGamesURL}?&y=${apiKey}&i=${system.ID}&f=1`)
+            .then(response => response.json())
+            .then(data => {
+                setLoadingGames(false);
+                setGames(data);
+                populateGames(data);
+            })
+    }
+
     // Initial call for systems list
     useEffect(() => {
         fetch(`${getSystemListURL}?y=${apiKey}&a=1&g=1`)
@@ -40,7 +86,6 @@ function Home() {
                 // Populate systems dropdown
                 data => {
                     setLoadingSystems(false);
-                    setSystems(data);
                     setSystemNavList(data.map((system) =>
                         <Dropdown.Item onClick={() => selectSystem(system)}>
                             <img
@@ -90,54 +135,7 @@ function Home() {
             const filteredList = games.filter((game) => game.Title.toLowerCase().includes(filter.toLowerCase()));
             populateGames(filteredList);
         }
-    }, [games, filter])
-
-    /**
-     * Select system from dropdown, display first page of games, and prepare pagination
-     * @param {Object} system Object containing system data, retrieved from RA api call
-     */
-    const selectSystem = (system) => {
-        setCurrentSystem(system);
-
-        setLoadingGames(true);
-        fetch(`${getGamesURL}?&y=${apiKey}&i=${system.ID}&f=1`)
-            .then(response => response.json())
-            .then(data => {
-                setLoadingGames(false);
-                setGames(data);
-                populateGames(data);
-            })
-    }
-
-    const populateGames = (gameList) => {
-        // Display page 1
-        setDisplayGames(gameList);
-        const paginatedGames = gameList.slice(0, cardsPerPage);
-        setGameCards(paginatedGames.map((game, index) =>
-            <GameCard
-                index={index}
-                id={game.ID}
-                title={game.Title}
-                image={game.ImageIcon}
-                numAchievements={game.NumAchievements}
-                points={game.Points}
-            />
-        ));
-        setCurrentPage(1);
-
-        // Calculate page count
-        const pageCount = Math.ceil(gameList.length / cardsPerPage)
-        setPageCount(pageCount);
-
-        // Update pagination bar
-        setPaginationBar(
-            <PaginationBar
-                currentPage={1}
-                pageCount={pageCount}
-                setPage={setPage}
-            />
-        )
-    }
+    }, [games, populateGames, filter])
 
     // In hindsight this wasn't as complicated as I was expecting, not gonna touch it before the presentation though
     const setPage = (page) => {

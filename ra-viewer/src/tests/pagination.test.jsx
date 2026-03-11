@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { screen, render, fireEvent } from '@testing-library/react'
+import { screen, render } from '@testing-library/react'
 import PaginationBar from '../components/PaginationBar'
 
 test("Buttons greyed out and hidden on page 1 of 10", () => {
